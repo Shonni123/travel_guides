@@ -1,0 +1,383 @@
+{% extends 'guides/base.html' %}
+
+{% block content %}
+<!-- Герой секция БЕЗ ПОИСКА -->
+<section class="hero-section" style="margin-top: 80px;">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6 fade-in">
+                <div class="mb-4">
+                    <span class="city-badge pulse" style="background: rgba(255,255,255,0.2); color: white; margin-bottom: 1rem; display: inline-block;">
+                        <i class="fas fa-star me-2"></i>Премиум путеводители
+                    </span>
+                </div>
+                <h1 class="hero-title">Исследуй мир как местный</h1>
+                <p class="hero-subtitle">Откройте для себя скрытые жемчужины, местные секреты и настоящую душу каждого города с нашими детальными путеводителями.</p>
+
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <a href="#cities" class="btn btn-primary btn-lg">
+                        <i class="fas fa-map-marked-alt me-2"></i>
+                        Все города
+                    </a>
+                    <a href="{% url 'guides:random_city' %}" class="btn btn-outline btn-lg" style="border-color: white; color: white;">
+                        <i class="fas fa-dice me-2"></i>
+                        Случайный город
+                    </a>
+                </div>
+
+                <!-- Быстрые цифры -->
+                <div class="row mt-5 pt-4" style="border-top: 1px solid rgba(255,255,255,0.2);">
+                    <div class="col-4 text-center">
+                        <div class="stat-number" style="color: white; font-size: 2rem;" data-count="{{ cities.count }}">0</div>
+                        <div class="stat-label" style="color: rgba(255,255,255,0.8);">Города</div>
+                    </div>
+                    <div class="col-4 text-center">
+                        <div class="stat-number" style="color: white; font-size: 2rem;" data-count="156">0</div>
+                        <div class="stat-label" style="color: rgba(255,255,255,0.8);">Места</div>
+                    </div>
+                    <div class="col-4 text-center">
+                        <div class="stat-number" style="color: white; font-size: 2rem;" data-count="18">0</div>
+                        <div class="stat-label" style="color: rgba(255,255,255,0.8);">Страны</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 text-center fade-in">
+                <div class="position-relative">
+                    <div class="float" style="animation-delay: 1s;">
+                        <i class="fas fa-globe-americas" style="font-size: 12rem; opacity: 0.7;"></i>
+                    </div>
+                    <div class="position-absolute" style="top: 20%; left: 20%; animation: float 4s ease-in-out infinite;">
+                        <i class="fas fa-monument" style="font-size: 2rem; color: rgba(255,255,255,0.6);"></i>
+                    </div>
+                    <div class="position-absolute" style="top: 60%; right: 20%; animation: float 5s ease-in-out infinite reverse;">
+                        <i class="fas fa-utensils" style="font-size: 2rem; color: rgba(255,255,255,0.6);"></i>
+                    </div>
+                    <div class="position-absolute" style="bottom: 30%; left: 30%; animation: float 6s ease-in-out infinite;">
+                        <i class="fas fa-mountain" style="font-size: 2rem; color: rgba(255,255,255,0.6);"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Особенности -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5 fade-in">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="mb-3">Почему выбирают нас</h2>
+                <p class="text-muted">Мы создаем путеводители, которые действительно помогают понять город</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                <div class="text-center p-4 feature-card">
+                    <div class="feature-icon mx-auto mb-4">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h5 class="mb-3">Глубокие знания</h5>
+                    <p class="text-muted">Детальная информация о каждой достопримечательности с историческими фактами и местными легендами</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                <div class="text-center p-4 feature-card">
+                    <div class="feature-icon mx-auto mb-4">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h5 class="mb-3">Продуманные маршруты</h5>
+                    <p class="text-muted">Готовые маршруты на 1-3 дня, которые учитывают логистику и помогают сэкономить время</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                <div class="text-center p-4 feature-card">
+                    <div class="feature-icon mx-auto mb-4">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h5 class="mb-3">Местные секреты</h5>
+                    <p class="text-muted">Рекомендации от местных жителей: где поесть, что посмотреть и как избежать туристических ловушек</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Статистика -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 col-6 mb-4 fade-in">
+                <span class="stat-number" data-count="24">0</span>
+                <span class="stat-label">Городов</span>
+            </div>
+            <div class="col-md-3 col-6 mb-4 fade-in">
+                <span class="stat-number" data-count="156">0</span>
+                <span class="stat-label">Достопримечательностей</span>
+            </div>
+            <div class="col-md-3 col-6 mb-4 fade-in">
+                <span class="stat-number" data-count="18">0</span>
+                <span class="stat-label">Стран</span>
+            </div>
+            <div class="col-md-3 col-6 mb-4 fade-in">
+                <span class="stat-number" data-count="47">0</span>
+                <span class="stat-label">Экспертов</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Популярные категории -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5 fade-in">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="mb-3">Найдите свой идеальный город</h2>
+                <p class="text-muted">Разнообразие направлений для любого типа путешественника</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4 fade-in">
+                <a href="?category=history" class="text-decoration-none">
+                    <div class="category-card text-center p-4" data-category="history">
+                        <div class="category-icon mb-3">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <h5>Исторические</h5>
+                        <p class="text-muted small">Города с богатым наследием и архитектурой</p>
+                        <div class="mt-3">
+                            <span class="badge bg-primary me-1 mb-1">Рим</span>
+                            <span class="badge bg-primary me-1 mb-1">Афины</span>
+                            <span class="badge bg-primary me-1 mb-1">Прага</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 mb-4 fade-in">
+                <a href="?category=beach" class="text-decoration-none">
+                    <div class="category-card text-center p-4" data-category="beach">
+                        <div class="category-icon mb-3">
+                            <i class="fas fa-umbrella-beach"></i>
+                        </div>
+                        <h5>Пляжные</h5>
+                        <p class="text-muted small">Идеальные направления для отдыха у моря</p>
+                        <div class="mt-3">
+                            <span class="badge bg-primary me-1 mb-1">Барселона</span>
+                            <span class="badge bg-primary me-1 mb-1">Дубай</span>
+                            <span class="badge bg-primary me-1 mb-1">Бали</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 mb-4 fade-in">
+                <a href="?category=modern" class="text-decoration-none">
+                    <div class="category-card text-center p-4" data-category="modern">
+                        <div class="category-icon mb-3">
+                            <i class="fas fa-city"></i>
+                        </div>
+                        <h5>Мегаполисы</h5>
+                        <p class="text-muted small">Динамичные города с современной архитектурой</p>
+                        <div class="mt-3">
+                            <span class="badge bg-primary me-1 mb-1">Токио</span>
+                            <span class="badge bg-primary me-1 mb-1">Нью-Йорк</span>
+                            <span class="badge bg-primary me-1 mb-1">Сингапур</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Кнопка сброса фильтра -->
+        {% if category_filter %}
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <a href="{% url 'guides:home' %}" class="btn btn-outline-primary">
+                    <i class="fas fa-times me-2"></i>Сбросить фильтр
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+
+<!-- Секция городов -->
+<section id="cities" class="py-5 bg-light">
+    <div class="container">
+        <div class="row mb-5 fade-in">
+            <div class="col-lg-8 mx-auto text-center">
+                <h2 class="mb-3">Наша коллекция городов</h2>
+                <p class="text-muted">Тщательно отобранные направления со всего мира</p>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for city in cities %}
+            <div class="col-lg-4 col-md-6 mb-4 fade-in">
+                <div class="city-card h-100">
+                    <div class="position-relative overflow-hidden">
+                        {% if city.image %}
+                        <img src="{{ city.image.url }}" class="city-image w-100" alt="{{ city.name }}">
+                        {% else %}
+                        <div class="city-image w-100 bg-gradient d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, var(--primary), var(--primary-light));">
+                            <i class="fas fa-city fa-4x text-white"></i>
+                        </div>
+                        {% endif %}
+                        <div class="position-absolute top-0 end-0 m-3">
+                            <span class="city-badge">
+                                <i class="fas fa-map-marker-alt me-1"></i>
+                                {{ city.country.name }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <h5 class="mb-0">{{ city.name }}</h5>
+                            <div class="text-warning">
+                                {% with rating=city.average_rating|default:0 %}
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+                            </div>
+                        </div>
+
+                        {% if city.description %}
+                        <p class="text-muted mb-3">{{ city.description|truncatewords:15 }}</p>
+                        {% endif %}
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-landmark me-1"></i>
+                                {{ city.attraction_set.count }} достопримечательностей
+                            </small>
+                            <div class="d-flex gap-2">
+                                {% if user.is_authenticated %}
+                                <form method="post" action="{% url 'guides:toggle_favorite' city.pk %}" class="favorite-form">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                                <a href="{% url 'guides:city_detail' city.pk %}" class="btn btn-sm btn-primary">
+                                    Исследовать <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center fade-in">
+                <div class="card border-0 bg-white py-5">
+                    <div class="card-body">
+                        <i class="fas fa-compass fa-4x text-muted mb-3"></i>
+                        <h4 class="text-muted mb-3">База городов в разработке</h4>
+                        <p class="text-muted mb-4">Мы активно работаем над наполнением нашей коллекции удивительных мест</p>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <a href="{% url 'guides:random_city' %}" class="btn btn-primary">
+                                <i class="fas fa-dice me-2"></i>
+                                Случайный город
+                            </a>
+                            <a href="/admin/" class="btn btn-outline">
+                                <i class="fas fa-plus me-2"></i>
+                                Добавить город
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA секция -->
+<section class="py-5 text-white" style="background: linear-gradient(135deg, var(--primary-light), var(--primary));">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 fade-in">
+                <h3 class="mb-3">Готовы к новым открытиям?</h3>
+                <p class="mb-4 opacity-75">Присоединяйтесь к сообществу путешественников и откройте для себя мир по-новому</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{% url 'guides:random_city' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-rocket me-2"></i>
+                        Начать путешествие
+                    </a>
+                    <a href="#cities" class="btn btn-outline btn-lg" style="border-color: white; color: white;">
+                        <i class="fas fa-compass me-2"></i>
+                        Исследовать все
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .feature-card {
+        transition: all 0.3s ease;
+        border-radius: 12px;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        background: var(--primary-light);
+        transform: scale(1.1);
+    }
+
+    .category-card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .category-card:hover {
+        border-color: var(--primary);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .category-icon {
+        font-size: 2.5rem;
+        color: var(--primary);
+        transition: all 0.3s ease;
+    }
+
+    .category-card:hover .category-icon {
+        color: var(--primary-light);
+        transform: scale(1.1);
+    }
+
+    .bg-gradient {
+        background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    }
+</style>
+
+{% endblock %}

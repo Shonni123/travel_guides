@@ -1,0 +1,327 @@
+{% extends 'guides/base.html' %}
+
+{% block hero_section %}
+<!-- Герой секция -->
+<section class="hero-section" style="background: linear-gradient(135deg, var(--gold) 0%, #b89446 100%); margin-top: 80px;">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="fade-in">
+                    <div class="mb-4">
+                        <i class="fas fa-dice fa-3x mb-3" style="color: var(--deep-navy);"></i>
+                    </div>
+                    <h1 class="hero-title" style="color: var(--deep-navy);">Случайное приключение</h1>
+                    <p class="hero-subtitle" style="color: rgba(30, 42, 58, 0.8);">
+                        Доверьтесь судьбе и откройте для себя новое направление. Каждый клик - новое открытие.
+                    </p>
+                    <a href="{% url 'guides:random_city' %}" class="btn btn-primary btn-lg mt-3" style="background: var(--deep-navy); border-color: var(--deep-navy);">
+                        <i class="fas fa-sync-alt me-2"></i>
+                        Новый случайный город
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if city %}
+    <!-- Карточка случайного города -->
+    <div class="row justify-content-center mb-5 fade-in">
+        <div class="col-lg-10">
+            <div class="city-card">
+                <div class="position-relative overflow-hidden">
+                    {% if city.image %}
+                    <img src="{{ city.image.url }}" class="city-image w-100" alt="{{ city.name }}">
+                    {% else %}
+                    <div class="city-image w-100 bg-gradient d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, var(--forest-green), var(--slate));">
+                        <i class="fas fa-city fa-4x" style="color: var(--gold); opacity: 0.8;"></i>
+                    </div>
+                    {% endif %}
+
+                    <!-- Бейдж случайного выбора -->
+                    <div class="position-absolute top-0 start-0 m-4">
+                        <span class="city-badge" style="background: var(--gold); color: var(--deep-navy);">
+                            <i class="fas fa-random me-1"></i>
+                            Случайный выбор
+                        </span>
+                    </div>
+
+                    <!-- Бейдж страны -->
+                    <div class="position-absolute top-0 end-0 m-4">
+                        <span class="city-badge">
+                            <i class="fas fa-flag me-1"></i>
+                            {{ city.country.name }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="p-5">
+                    <div class="row align-items-start">
+                        <div class="col-lg-8">
+                            <div class="d-flex align-items-center mb-4">
+    <h2 class="mb-0 me-4">{{ city.name }}</h2>
+    <div class="text-warning">
+        {% with rating=city.average_rating|default:0 %}
+            {% for i in "12345" %}
+                {% if forloop.counter <= rating %}
+                    <i class="fas fa-star"></i>
+                {% else %}
+                    <i class="far fa-star"></i>
+                {% endif %}
+            {% endfor %}
+            <small class="text-muted ms-2">({{ rating }})</small>
+        {% endwith %}
+    </div>
+</div>
+
+                            {% if city.description %}
+                            <div class="mb-4">
+                                <h5 class="mb-3" style="color: var(--forest-green);">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    О городе
+                                </h5>
+                                <p class="text-muted lead">{{ city.description }}</p>
+                            </div>
+                            {% endif %}
+
+                            <div class="row text-center mb-4">
+    <div class="col-4">
+        <div class="p-3 rounded-3" style="background: rgba(44, 74, 62, 0.05);">
+            <div class="stat-number" style="font-size: 1.8rem; color: var(--forest-green);">
+                {{ attractions.count }}
+            </div>
+            <div class="stat-label" style="color: var(--slate); font-size: 0.8rem;">
+                Достопримечательностей
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="p-3 rounded-3" style="background: rgba(201, 169, 110, 0.05);">
+            <div style="font-size: 1.8rem; color: var(--gold); font-family: 'Crimson Text', serif; font-weight: 700;">
+                {{ city.average_rating|default:"0.0" }}
+            </div>
+            <div class="stat-label" style="color: var(--slate); font-size: 0.8rem;">
+                Рейтинг
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="p-3 rounded-3" style="background: rgba(73, 86, 100, 0.05);">
+            <div style="font-size: 1.8rem; color: var(--slate); font-family: 'Crimson Text', serif; font-weight: 700;">
+                {{ city.review_count }}
+            </div>
+            <div class="stat-label" style="color: var(--slate); font-size: 0.8rem;">
+                Отзывов
+            </div>
+        </div>
+    </div>
+</div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="bg-light-cream p-4 rounded-3 border">
+                                <h5 class="mb-3" style="color: var(--forest-green);">
+                                    <i class="fas fa-compass me-2"></i>
+                                    Ваш выбор
+                                </h5>
+                                <p class="text-muted small mb-3">
+                                    Этот город был выбран случайным образом специально для вас. Возможно, это знак для вашего следующего путешествия!
+                                </p>
+                                <div class="d-grid gap-2">
+                                    <a href="{% url 'guides:city_detail' city.pk %}" class="btn btn-primary">
+                                        <i class="fas fa-binoculars me-2"></i>
+                                        Подробнее о городе
+                                    </a>
+                                    <a href="{% url 'guides:home' %}" class="btn btn-outline" style="border-color: var(--warm-gray); color: var(--warm-gray);">
+                                        <i class="fas fa-list me-2"></i>
+                                        Все города
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Достопримечательности -->
+    {% if attractions %}
+    <div class="row justify-content-center fade-in">
+        <div class="col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 style="color: var(--deep-navy);">
+                    <i class="fas fa-landmark me-2" style="color: var(--gold);"></i>
+                    Что посмотреть в {{ city.name }}
+                </h3>
+                <span class="city-badge">
+                    {{ attractions.count }} мест
+                </span>
+            </div>
+
+            <div class="row">
+                {% for attraction in attractions %}
+                <div class="col-lg-6 mb-4">
+                    <div class="card border-0 shadow-sm h-100 transition-all">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="rounded-circle p-3 me-3" style="background: var(--forest-green);">
+                                    <i class="fas fa-monument text-white"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h5 class="fw-bold text-dark mb-1">{{ attraction.name }}</h5>
+                                    <span class="badge rounded-pill" style="background: var(--gold); color: var(--deep-navy);">
+                                        #{{ forloop.counter }}
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="text-muted mb-0">{{ attraction.description }}</p>
+
+                            {% if attraction.image %}
+                            <div class="mt-3">
+                                <img src="{{ attraction.image.url }}" class="img-fluid rounded-2" alt="{{ attraction.name }}" style="height: 120px; width: 100%; object-fit: cover;">
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Если нет достопримечательностей -->
+    <div class="row justify-content-center fade-in">
+        <div class="col-lg-8">
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-map-marked-alt fa-4x" style="color: var(--warm-gray);"></i>
+                </div>
+                <h4 style="color: var(--slate);">Достопримечательности скоро появятся</h4>
+                <p class="text-muted">Мы работаем над добавлением информации о самых интересных местах этого города</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- CTA секция -->
+    <div class="row justify-content-center mt-5 fade-in">
+        <div class="col-lg-8">
+            <div class="bg-light-cream p-5 rounded-3 border text-center">
+                <h4 class="mb-3" style="color: var(--forest-green);">Понравился город?</h4>
+                <p class="text-muted mb-4">Добавьте его в список желаний или исследуйте другие направления</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{% url 'guides:random_city' %}" class="btn btn-primary">
+                        <i class="fas fa-sync-alt me-2"></i>
+                        Другой случайный город
+                    </a>
+                    <a href="{% url 'guides:home' %}" class="btn btn-outline" style="border-color: var(--forest-green); color: var(--forest-green);">
+                        <i class="fas fa-compass me-2"></i>
+                        Все направления
+                    </a>
+                    <button class="btn btn-outline" style="border-color: var(--gold); color: var(--gold);">
+                        <i class="fas fa-heart me-2"></i>
+                        В избранное
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- Состояние когда нет городов -->
+    <div class="row justify-content-center fade-in">
+        <div class="col-lg-6">
+            <div class="card border-0 bg-light text-center py-5">
+                <div class="card-body">
+                    <div class="mb-4">
+                        <i class="fas fa-compass fa-4x" style="color: var(--warm-gray);"></i>
+                    </div>
+                    <h3 class="mb-3" style="color: var(--slate);">База городов пуста</h3>
+                    <p class="text-muted mb-4">Добавьте города через админ-панель, чтобы использовать функцию случайного выбора</p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="/admin/" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>
+                            Добавить город
+                        </a>
+                        <a href="{% url 'guides:home' %}" class="btn btn-outline" style="border-color: var(--warm-gray); color: var(--warm-gray);">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            На главную
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Декоративный разделитель -->
+<div class="section-divider mt-5"></div>
+
+<!-- Инфографика -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto fade-in">
+                <h4 class="mb-4">Как работает случайный выбор?</h4>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="p-3">
+                            <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: var(--forest-green);">
+                                <i class="fas fa-shuffle fa-2x text-white"></i>
+                            </div>
+                            <h6>Случайный алгоритм</h6>
+                            <p class="text-muted small">Город выбирается случайным образом из всей базы данных</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="p-3">
+                            <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: var(--gold);">
+                                <i class="fas fa-gem fa-2x text-dark"></i>
+                            </div>
+                            <h6>Уникальные находки</h6>
+                            <p class="text-muted small">Открывайте скрытые жемчужины и неочевидные направления</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="p-3">
+                            <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: var(--slate);">
+                                <i class="fas fa-infinity fa-2x text-white"></i>
+                            </div>
+                            <h6>Бесконечные возможности</h6>
+                            <p class="text-muted small">Каждый раз - новое приключение и свежие впечатления</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .transition-all {
+        transition: all 0.3s ease;
+    }
+
+    .transition-all:hover {
+        transform: translateY(-3px);
+    }
+</style>
+{% endblock %}
+<style>
+    /* Исправление перекрытия навигацией */
+    .random-section {
+        padding-top: 80px;
+    }
+
+    /* Для мобильных */
+    @media (max-width: 768px) {
+        .random-section {
+            padding-top: 100px;
+        }
+    }
+</style>

@@ -1,0 +1,103 @@
+{% extends 'guides/base.html' %}
+
+{% block title %}Избранные города - Travel Guides{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mb-0">
+                    <i class="fas fa-heart text-danger me-3"></i>Мои избранные города
+                </h1>
+                <span class="badge bg-primary fs-6">{{ favorites.count }} городов</span>
+            </div>
+
+            {% if favorites %}
+            <div class="row">
+                {% for favorite in favorites %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="city-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            {% if favorite.city.image %}
+                            <img src="{{ favorite.city.image.url }}" class="city-image w-100" alt="{{ favorite.city.name }}">
+                            {% else %}
+                            <div class="city-image w-100 bg-gradient d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, var(--primary), var(--primary-light));">
+                                <i class="fas fa-city fa-4x text-white"></i>
+                            </div>
+                            {% endif %}
+                            <div class="position-absolute top-0 end-0 m-3">
+                                <span class="city-badge">
+                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                    {{ favorite.city.country.name }}
+                                </span>
+                            </div>
+                            <div class="position-absolute top-0 start-0 m-3">
+                                <form method="post" action="{% url 'guides:toggle_favorite' favorite.city.pk %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="mb-0">{{ favorite.city.name }}</h5>
+                                <div class="text-warning">
+                                    {% with rating=favorite.city.average_rating|default:0 %}
+                                        {% for i in "12345" %}
+                                            {% if forloop.counter <= rating %}
+                                                <i class="fas fa-star"></i>
+                                            {% else %}
+                                                <i class="far fa-star"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+
+                            {% if favorite.city.description %}
+                            <p class="text-muted mb-3">{{ favorite.city.description|truncatewords:15 }}</p>
+                            {% endif %}
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-landmark me-1"></i>
+                                    {{ favorite.city.attraction_set.count }} достопримечательностей
+                                </small>
+                                <a href="{% url 'guides:city_detail' favorite.city.pk %}" class="btn btn-sm btn-primary">
+                                    Подробнее
+                                </a>
+                            </div>
+                            <div class="mt-2">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    Добавлено {{ favorite.created_at|date:"d.m.Y" }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-heart-broken fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted mb-3">У вас пока нет избранных городов</h4>
+                <p class="text-muted mb-4">Нажимайте на сердечко ♡ чтобы добавлять города в избранное</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{% url 'guides:home' %}" class="btn btn-primary">
+                        <i class="fas fa-compass me-2"></i>Найти города
+                    </a>
+                    <a href="{% url 'guides:random_city' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-dice me-2"></i>Случайный город
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
