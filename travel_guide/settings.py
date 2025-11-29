@@ -9,6 +9,20 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+import os
+from dotenv import load_dotenv
+
+# Загружаем переменные из .env файла
+load_dotenv()
+
+# Теперь меняем настройки:
+SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key')
+
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+
+# Остальные настройки оставляем как есть
 
 from pathlib import Path
 
