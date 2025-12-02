@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
 from django.contrib.auth import logout
 import random
 from .models import City, Review
@@ -58,12 +60,34 @@ def register(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+
+            print("=== DEBUG: Начало отправки email ===")  # ← ДОБАВЬ ЭТУ СТРОКУ
+            print(f"DEBUG: User email: {user.email}")  # ← ДОБАВЬ ЭТУ СТРОКУ
+            print(f"DEBUG: EMAIL_HOST_USER: {settings.EMAIL_HOST_USER}")  # ← ДОБАВЬ
+            print(f"DEBUG: DEFAULT_FROM_EMAIL: {settings.DEFAULT_FROM_EMAIL}")  # ← ДОБАВЬ
+
+            # Отправляем красивое welcome email
+            try:
+                # Максимально простое письмо без ВСЕХ нестандартных символов
+                result = send_mail(
+                    'Welcome to Travel Guides',  # Только английские буквы
+                    f'Hello {user.username}! Thank you for registration.',  # Только ASCII
+                    settings.EMAIL_HOST_USER,
+                    [user.email],
+                    fail_silently=False,
+                )
+
+                print(f"DEBUG: Send mail result: {result}")
+                messages.success(request, 'Registration successful! Check your email.')
+
+            except Exception as e:
+                print(f"DEBUG: Full error: {repr(e)}")  # Покажем полную ошибку
+                messages.success(request, 'Registration successful! Welcome!')
+
             login(request, user)
-            messages.success(request, f'Добро пожаловать, {user.username}!')
             return redirect('guides:home')
     else:
         form = CustomUserCreationForm()
-
     return render(request, 'guides/register.html', {'form': form})
 
 
